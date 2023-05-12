@@ -18,6 +18,10 @@ propeller.src = "sound/propeller.wav";
 
 let mouseIsPressed = false;
 
+let initialWallSpeed = 2;
+let wallSpeed = initialWallSpeed;
+const accel = 0.1;
+
 //global variables reset
 let state;
 let heli;

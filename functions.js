@@ -24,11 +24,6 @@ function runGame() {
   drawGame();
 }
 
-function setup() {
-  frameRate(30);
-  frameCount();
-}
-
 function moveHeli() {
   //accelerate upward if mouse is pressed
   if (mouseIsPressed) {
@@ -46,35 +41,57 @@ function moveHeli() {
 
   //move helicopter by its speed
   heli.y += heli.speed;
-
-  if (heli.speed.frameNo >= 100) {
-    heli.speed += 5;
-    heli.speed.update();
-  }
 }
 
+//upsate speed of walls
+function updateWallSpeed() {
+  wallSpeed += accel;
+}
+
+//function to reset wall speed
+function resetWallSpeed() {
+  wallSpeed = initialWallSpeed;
+}
+
+//timer to update wall speed every second
+setInterval(updateWallSpeed, 1000);
+
 function moveWalls() {
+  const currentSpeed = wallSpeed;
+
   //wall1
-  wall1.x += -3;
+  wall1.x += -currentSpeed;
   if (wall1.x + wall1.w < 0) {
     wall1.x = wall3.x + 500;
     wall1.y = Math.random() * 300 + 100;
   }
 
   //wall2
-  wall2.x += -3;
+  wall2.x += -currentSpeed;
   if (wall2.x + wall2.w < 0) {
     wall2.x = wall1.x + 500;
     wall2.y = Math.random() * 300 + 100;
   }
 
   //wall3
-  wall3.x += -3;
+  wall3.x += -currentSpeed;
   if (wall3.x + wall3.w < 0) {
     wall3.x = wall2.x + 500;
     wall3.y = Math.random() * 300 + 100;
   }
 }
+
+//game loop to move walls based on updated speed
+function gameLoop() {
+  //move the walls
+  moveWalls();
+
+  //call game loop again
+  requestAnimationFrame(gameLoop);
+}
+
+//start game loop
+gameLoop();
 
 function checkCollisions() {
   //collision w top and bottom green bars
@@ -83,12 +100,14 @@ function checkCollisions() {
   } else if (heli.y + heli.h > cnv.height - 50) {
     gameOver();
   }
+
   //check collision w walls
 }
 
 function gameOver() {
   explosion.play();
   state = "gameover";
+  resetWallSpeed();
 
   setTimeout(reset, 2000);
 }
@@ -135,6 +154,8 @@ function reset() {
     y: Math.random() * 300 + 100,
     w: 50,
     h: 100,
+    speed: 2,
+    accel: 0.1,
   };
 
   wall2 = {
@@ -142,6 +163,8 @@ function reset() {
     y: Math.random() * 300 + 100,
     w: 50,
     h: 100,
+    speed: 2,
+    accel: 0.1,
   };
 
   wall3 = {
@@ -149,6 +172,8 @@ function reset() {
     y: Math.random() * 300 + 100,
     w: 50,
     h: 100,
+    speed: 2,
+    accel: 0.1,
   };
 }
 
