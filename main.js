@@ -22,6 +22,8 @@ let initialWallSpeed = 2;
 let wallSpeed = initialWallSpeed;
 const accel = 0.1;
 
+let distance = 0;
+
 //global variables reset
 let state;
 let heli;

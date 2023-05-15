@@ -81,10 +81,29 @@ function moveWalls() {
   }
 }
 
+function updateDistance() {
+  distance++;
+}
+
 //game loop to move walls based on updated speed
 function gameLoop() {
   //move the walls
   moveWalls();
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, cnv.width, cnv.height);
+
+  // Update distance
+  updateDistance();
+
+  // Update other game elements
+  // ...
+
+  // Render the distance text
+  ctx.fillStyle = "black";
+  ctx.fillText("HELICOPTER GAME", 25, 35);
+  ctx.fillText("DISTANCE: " + distance, 25, cnv.height - 15);
+  ctx.fillText("BEST: 0", cnv.width - 250, cnv.height - 15);
 
   //call game loop again
   requestAnimationFrame(gameLoop);
@@ -102,6 +121,28 @@ function checkCollisions() {
   }
 
   //check collision w walls
+  if (
+    heli.x + heli.w > wall1.x &&
+    heli.x < wall1.x + wall1.w &&
+    heli.y + heli.h > wall1.y &&
+    heli.y < wall1.y + wall1.h
+  ) {
+    gameOver();
+  } else if (
+    heli.x + heli.w > wall2.x &&
+    heli.x < wall2.x + wall2.w &&
+    heli.y + heli.h > wall2.y &&
+    heli.y < wall2.y + wall2.h
+  ) {
+    gameOver();
+  } else if (
+    heli.x + heli.w > wall3.x &&
+    heli.x < wall3.x + wall3.w &&
+    heli.y + heli.h > wall3.y &&
+    heli.y < wall3.y + wall3.h
+  ) {
+    gameOver();
+  }
 }
 
 function gameOver() {
@@ -199,7 +240,7 @@ function drawMainComponents() {
   ctx.font = "30px Consolas";
   ctx.fillStyle = "black";
   ctx.fillText("HELICOPTER GAME", 25, 35);
-  ctx.fillText("DISTANCE: 0", 25, cnv.height - 15);
+  ctx.fillText("DISTANCE: " + distance, 25, cnv.height - 15);
   ctx.fillText("BEST: 0", cnv.width - 250, cnv.height - 15);
 
   // Helicopter
