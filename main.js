@@ -23,6 +23,7 @@ let wallSpeed = initialWallSpeed;
 const accel = 0.1;
 
 let distance = 0;
+let bestScore = 0;
 
 //global variables reset
 let state;

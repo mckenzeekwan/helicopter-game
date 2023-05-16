@@ -19,6 +19,7 @@ function runGame() {
   moveHeli();
   moveWalls();
   checkCollisions();
+  updateDistance();
 
   //draw
   drawGame();
@@ -90,14 +91,12 @@ function gameLoop() {
   //move the walls
   moveWalls();
 
-  // Clear the canvas
-  ctx.clearRect(0, 0, cnv.width, cnv.height);
-
-  // Update distance
-  updateDistance();
-
   // Update other game elements
   // ...
+  updateDistance();
+
+  // Clear the canvas
+  ctx.clearRect(0, 0, cnv.width, cnv.height);
 
   // Render the distance text
   ctx.fillStyle = "black";
@@ -149,6 +148,10 @@ function gameOver() {
   explosion.play();
   state = "gameover";
   resetWallSpeed();
+
+  if (distance > bestScore) {
+    bestScore = distance + 1;
+  }
 
   setTimeout(reset, 2000);
 }
@@ -216,6 +219,8 @@ function reset() {
     speed: 2,
     accel: 0.1,
   };
+
+  distance = 0;
 }
 
 function drawWalls() {
@@ -241,7 +246,7 @@ function drawMainComponents() {
   ctx.fillStyle = "black";
   ctx.fillText("HELICOPTER GAME", 25, 35);
   ctx.fillText("DISTANCE: " + distance, 25, cnv.height - 15);
-  ctx.fillText("BEST: 0", cnv.width - 250, cnv.height - 15);
+  ctx.fillText("BEST: " + bestScore, cnv.width - 250, cnv.height - 15);
 
   // Helicopter
   ctx.drawImage(heliImg, heli.x, heli.y);
